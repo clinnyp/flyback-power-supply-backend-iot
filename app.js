@@ -1,8 +1,10 @@
 const { SerialPort } = require("serialport");
 
-const port = new SerialPort({ path: "COM3", baudRate: 9600 });
+// MAC
+const port = new SerialPort({ path: "/dev/tty.usbmodem14402", baudRate: 9600 });
 
-// const buffer = Buffer.from("1");
+// WINDOWS
+//const port = new SerialPort({ path: "COM3", baudRate: 9600 });
 
 setTimeout(() => {
   port.write("0", function (err) {
