@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const { SerialPort } = require("serialport");
+import { Request, Response } from "express";
 
 const app = express();
 const expressPort = 3000;
@@ -9,14 +10,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 //MAC
-//const port = new SerialPort({ path: "/dev/tty.usbmodem14402", baudRate: 9600 });
+const port = new SerialPort({ path: "/dev/tty.usbmodem14402", baudRate: 9600 });
 
 // WINDOWS
 //const port = new SerialPort({ path: "COM3", baudRate: 9600 });
 
-app.get("/on", (req, res) => {
+app.get("/on", (req: Request, res: Response) => {
   setTimeout(() => {
-    port.write("1", function (err) {
+    port.write("1", function (err: Error) {
       if (err) {
         console.log("Error on write: ", err.message);
       }
@@ -38,17 +39,17 @@ app.get("/on", (req, res) => {
 
 // send desired voltage
 
-app.get("/refresh", (req, res) => {
+app.get("/refresh", (req: Request, res: Response) => {
   const samples = [];
 });
 
-app.post("/voltage", (req, res) => {
+app.post("/voltage", (req: Request, res: Response) => {
   const desiredVoltage = req.body.voltage;
 
   console.log(`The desired voltage ${desiredVoltage}`);
 
   setTimeout(() => {
-    port.write(desiredVoltage, (err) => {
+    port.write(desiredVoltage, (err: Error) => {
       if (err) {
         console.log("Error on write: ", err.message);
       }
@@ -62,6 +63,6 @@ app.listen(expressPort, () => {
   console.log(`Listening on port ${expressPort}`);
 });
 
-function normaliseVoltage(desiredVoltage) {
+function normaliseVoltage(desiredVoltage: number) {
   desiredVoltage;
 }
