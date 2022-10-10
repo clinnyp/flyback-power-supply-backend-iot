@@ -14,5 +14,9 @@
     "body-parser": "^1.20.1",
     "express": "^4.18.1",
     "serialport": "^10.4.0"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.4"
   }
 }
