@@ -21,17 +21,15 @@ io.on("connection", (socket) => {
 });
 
 //MAC
-// const port = new SerialPort({ path: "/dev/tty.usbmodem14402", baudRate: 9600 });
-
-// const parser = new Readline();
-// port.pipe(parser);
-
-// parser.on("data", (line) => {
-//   console.log(line);
-// });
+// REMINDER: ls /dev/tty.*
+const port = new SerialPort({ path: "/dev/tty.usbmodem14302", baudRate: 9600 });
 
 // WINDOWS
 //const port = new SerialPort({ path: "COM3", baudRate: 9600 });
+
+port.on("data", (sample) =>
+  console.log("this is here in the port on" + sample)
+);
 
 // app.get("/on", (req: Request, res: Response) => {
 //   setTimeout(() => {
@@ -55,42 +53,25 @@ io.on("connection", (socket) => {
 //   }, 1000);
 // });
 
-// get 5 samples of vout
-
-// app.get("/refresh", (req: Request, res: Response) => {
-//   const samples = [];
-
-//   setTimeout(() => {
-//     port.on("data", (sample: number) => samples.push(sample));
-//   }, 2000);
-
-//   res.json({ vout: samples });
-// });
-
 // send desired voltage
 
 app.post("/voltage", (req: Request, res: Response) => {
   const desiredVoltage = req.body.voltage;
   const normalizedVoltage = desiredVoltage / 0.2;
 
-  const voltage = new Uint8Array([100]);
+  const converted_to_8bit = new Uint8Array([normalizedVoltage]);
+
+  console.log("his is the check" + converted_to_8bit[0]);
   console.log(`The normalized voltage ${normalizedVoltage}`);
 
-  // port.write(voltage[0], (err: Error) => {
-  //   if (err) {
-  //     console.log("Error on write: ", err.message);
-  //   }
-  // });
-
-  // if (desiredVoltage >= 0 && desiredVoltage <= 30) {
-  //   setTimeout(() => {
-  //     port.write(desiredVoltage, (err: Error) => {
-  //       if (err) {
-  //         console.log("Error on write: ", err.message);
-  //       }
-  //     });
-  //     res.sendStatus(200);
-  //   }, 500);
-  // }
-  res.send(200);
+  if (desiredVoltage >= 0 && desiredVoltage <= 30) {
+    setTimeout(() => {
+      port.write(converted_to_8bit, (err: Error) => {
+        if (err) {
+          console.log("Error on write: ", err.message);
+        }
+      });
+    }, 500);
+  }
+  res.sendStatus(200);
 });
