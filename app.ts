@@ -22,14 +22,31 @@ io.on("connection", (socket) => {
 
 //MAC
 // REMINDER: ls /dev/tty.*
-const port = new SerialPort({ path: "/dev/tty.usbmodem14302", baudRate: 9600 });
+const port = new SerialPort({ path: "/dev/tty.usbmodem14402", baudRate: 9600 });
 
 // WINDOWS
 //const port = new SerialPort({ path: "COM3", baudRate: 9600 });
 
-port.on("data", (sample) =>
-  console.log("this is here in the port on" + sample)
-);
+// Stored Samples
+// const samples = [];
+// let index = 0;
+
+// function handleSamples(sample: number) {
+//   if (samples.length < 5) {
+//     samples[index] = sample;
+//     index++;
+//   }
+
+//   if (samples.length === 5) {
+//     index = 0;
+//     samples[index] = sample;
+//   }
+// }
+
+// port.on("data", (sample: number) => {
+//   handleSamples(sample);
+//   console.log("this is here in the port on" + sample);
+// });
 
 // app.get("/on", (req: Request, res: Response) => {
 //   setTimeout(() => {
@@ -42,15 +59,11 @@ port.on("data", (sample) =>
 //   }, 1000);
 // });
 
-// app.get("/off", (req, res) => {
+// app.get("/get_samples", (req: Request, res: Response) => {
 //   setTimeout(() => {
-//     port.write("0", function (err) {
-//       if (err) {
-//         console.log("Error on write: ", err.message);
-//       }
-//       console.log("message written");
-//     });
-//   }, 1000);
+//     res.send(samples);
+//   }, 1500);
+//   res.sendStatus(200);
 // });
 
 // send desired voltage
